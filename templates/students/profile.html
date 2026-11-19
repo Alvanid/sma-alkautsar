@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Profil Saya{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2><i class="fas fa-user"></i> Profil Saya</h2>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4 text-center">
+                {% if student.photo %}
+                <img src="{{ url_for('static', filename='uploads/' + student.photo) }}" class="img-fluid rounded-circle mb-3" style="width:150px;height:150px;object-fit:cover;">
+                {% else %}
+                <i class="fas fa-user-circle fa-5x text-muted mb-3"></i>
+                {% endif %}
+            </div>
+            <div class="col-md-8">
+                <table class="table">
+                    <tr><th>NIS</th><td>{{ student.nis }}</td></tr>
+                    <tr><th>NISN</th><td>{{ student.nisn or '-' }}</td></tr>
+                    <tr><th>Nama</th><td>{{ student.full_name }}</td></tr>
+                    <tr><th>Kelas</th><td>{{ student.classroom.full_name if student.classroom else '-' }}</td></tr>
+                    <tr><th>Jenis Kelamin</th><td>{{ student.gender }}</td></tr>
+                    <tr><th>Tempat/Tgl Lahir</th><td>{{ student.birth_place or '-' }}, {{ student.birth_date.strftime('%d/%m/%Y') if student.birth_date else '-' }}</td></tr>
+                    <tr><th>Alamat</th><td>{{ student.address or '-' }}</td></tr>
+                    <tr><th>Telepon</th><td>{{ student.phone or '-' }}</td></tr>
+                    <tr><th>Orang Tua</th><td>{{ student.parent_name or '-' }}</td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

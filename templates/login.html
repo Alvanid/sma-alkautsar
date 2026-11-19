@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Login - SMA AL-KAUTSAR MANYAR{% endblock %}
+
+{% block guest_content %}
+<div class="login-container">
+    <div class="login-card">
+        <div class="login-header">
+            <img src="{{ url_for('static', filename='images/logo_alkautsar.png') }}" alt="Logo" class="login-logo">
+            <h3>SMA AL-KAUTSAR MANYAR</h3>
+            <p>Sistem Informasi Absensi</p>
+        </div>
+        <form method="POST" action="{{ url_for('auth.login') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="mb-3">
+                <label class="form-label">Username</label>
+                <input type="text" name="username" class="form-control" required autofocus>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input type="password" name="password" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </button>
+            <a href="{{ url_for('landing') }}" class="btn btn-link w-100 mt-2">Kembali ke Beranda</a>
+        </form>
+        <div class="login-info mt-3">
+            <small>Akun Demo: admin / admin123</small>
+        </div>
+    </div>
+</div>
+{% endblock %}

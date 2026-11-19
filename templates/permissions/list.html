@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Perizinan{% endblock %}
+
+{% block content %}
+<div class="page-header d-flex justify-content-between align-items-center">
+    <h2><i class="fas fa-file-alt"></i> Perizinan</h2>
+    <a href="{{ url_for('permissions.submit') }}" class="btn btn-primary">
+        <i class="fas fa-plus"></i> Ajukan Izin
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Tanggal</th>
+                    {% if current_user.role != 'student' %}<th>Siswa</th>{% endif %}
+                    <th>Jenis</th>
+                    <th>Alasan</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in permissions %}
+                <tr>
+                    <td>{{ p.start_date.strftime('%d/%m/%Y') }} - {{ p.end_date.strftime('%d/%m/%Y') }}</td>
+                    {% if current_user.role != 'student' %}<td>{{ p.student.full_name }}</td>{% endif %}
+                    <td>{{ p.type|capitalize }}</td>
+                    <td>{{ p.reason[:50] }}...</td>
+                    <td>
+                        {% if p.status == 'pending' %}
+                        <span class="badge bg-warning text-dark">Menunggu</span>
+                        {% elif p.status == 'approved' %}
+                        <span class="badge bg-success">Disetujui</span>
+                        {% else %}
+                        <span class="badge bg-danger">Ditolak</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if p.status == 'pending' and current_user.role in ['admin', 'teacher'] %}
+                        <form method="POST" action="{{ url_for('permissions.approve', id=p.id) }}" style="display:inline;">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button class="btn btn-sm btn-success"><i class="fas fa-check"></i></button>
+                        </form>
+                        <form method="POST" action="{{ url_for('permissions.reject', id=p.id) }}" style="display:inline;">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button class="btn btn-sm btn-danger"><i class="fas fa-times"></i></button>
+                        </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

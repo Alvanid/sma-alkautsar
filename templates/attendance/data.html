@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Data Kehadiran{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2><i class="fas fa-clipboard-list"></i> Data Kehadiran</h2>
+</div>
+
+<div class="card mb-3">
+    <div class="card-body">
+        <form method="GET" class="row g-2">
+            <div class="col-md-4">
+                <input type="date" name="date" class="form-control" value="{{ date_filter }}">
+            </div>
+            <div class="col-md-4">
+                <button class="btn btn-primary w-100"><i class="fas fa-filter"></i> Filter</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <table class="table">
+            <thead><tr><th>Tanggal</th><th>Nama</th><th>Kelas</th><th>Sesi</th><th>Status</th><th>Waktu</th></tr></thead>
+            <tbody>
+                {% for a in attendances %}
+                <tr>
+                    <td>{{ a.date.strftime('%d/%m/%Y') }}</td>
+                    <td>{{ a.student.full_name }}</td>
+                    <td>{{ a.student.classroom.full_name if a.student.classroom else '-' }}</td>
+                    <td>{{ a.session.name }}</td>
+                    <td><span class="badge badge-{{ a.status }}">{{ a.status|capitalize }}</span></td>
+                    <td>{{ a.check_in_time.strftime('%H:%M:%S') if a.check_in_time else '-' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

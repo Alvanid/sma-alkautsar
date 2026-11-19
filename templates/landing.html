@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Beranda - SMA AL-KAUTSAR MANYAR{% endblock %}
+
+{% block guest_content %}
+<div class="landing-page">
+    <div class="landing-hero">
+        <div class="container">
+            <div class="hero-content">
+                <img src="{{ url_for('static', filename='images/logo_alkautsar.png') }}" alt="Logo" class="hero-logo">
+                <h1>SMA AL-KAUTSAR MANYAR</h1>
+                <p class="subtitle">Manyar, Sekaran, Kabupaten Lamongan, Jawa Timur</p>
+                <h2 class="mt-4">Sistem Informasi Absensi Siswa</h2>
+                <p class="description">
+                    Platform modern untuk pengelolaan absensi siswa yang terintegrasi, 
+                    aman, dan mudah digunakan. Mendukung QR Code, laporan otomatis, 
+                    dan monitoring real-time.
+                </p>
+                <div class="login-buttons mt-4">
+                    <a href="{{ url_for('auth.login') }}" class="btn btn-primary btn-lg me-2">
+                        <i class="fas fa-user-shield"></i> Login Admin
+                    </a>
+                    <a href="{{ url_for('auth.login') }}" class="btn btn-warning btn-lg me-2">
+                        <i class="fas fa-chalkboard-teacher"></i> Login Guru
+                    </a>
+                    <a href="{{ url_for('auth.login') }}" class="btn btn-success btn-lg">
+                        <i class="fas fa-user-graduate"></i> Login Siswa
+                    </a>
+                </div>
+                <div class="info-cards mt-5">
+                    <div class="info-card">
+                        <i class="fas fa-calendar-alt"></i>
+                        <h5>Tahun Ajaran 2025/2026</h5>
+                        <p>Semester Ganjil Aktif</p>
+                    </div>
+                    <div class="info-card">
+                        <i class="fas fa-qrcode"></i>
+                        <h5>QR Code System</h5>
+                        <p>Absensi Cepat & Akurat</p>
+                    </div>
+                    <div class="info-card">
+                        <i class="fas fa-chart-line"></i>
+                        <h5>Laporan Otomatis</h5>
+                        <p>Excel & PDF</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="landing-footer">
+        <p>&copy; 2026 SMA AL-KAUTSAR MANYAR. All Rights Reserved.</p>
+    </footer>
+</div>
+{% endblock %}

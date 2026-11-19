@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Sesi Absensi{% endblock %}
+
+{% block content %}
+<div class="page-header d-flex justify-content-between align-items-center">
+    <h2><i class="fas fa-clock"></i> Sesi Absensi</h2>
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSessionModal">
+        <i class="fas fa-plus"></i> Tambah Sesi
+    </button>
+</div>
+
+<div class="row">
+    {% for s in sessions %}
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h4>{{ s.name }}</h4>
+                <p><i class="fas fa-play"></i> Mulai: {{ s.start_time.strftime('%H:%M') }}</p>
+                <p><i class="fas fa-stop"></i> Selesai: {{ s.end_time.strftime('%H:%M') }}</p>
+                {% if s.late_threshold %}
+                <p><i class="fas fa-clock"></i> Batas Terlambat: {{ s.late_threshold.strftime('%H:%M') }}</p>
+                {% endif %}
+                <span class="badge {% if s.is_active %}bg-success{% else %}bg-secondary{% endif %}">
+                    {{ 'Aktif' if s.is_active else 'Nonaktif' }}
+                </span>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="addSessionModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="POST" action="{{ url_for('attendance.add_session') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div class="modal-header">
+                    <h5 class="modal-title">Tambah Sesi Absensi</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Nama Sesi</label>
+                        <input type="text" name="name" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Waktu Mulai</label>
+                        <input type="time" name="start_time" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Waktu Selesai</label>
+                        <input type="time" name="end_time" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Batas Terlambat</label>
+                        <input type="time" name="late_threshold" class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

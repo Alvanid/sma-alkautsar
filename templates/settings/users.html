@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Manajemen Pengguna{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2><i class="fas fa-users"></i> Manajemen Pengguna</h2>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <tr><th>Username</th><th>Nama</th><th>Email</th><th>Role</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+                {% for u in users %}
+                <tr>
+                    <td>{{ u.username }}</td>
+                    <td>{{ u.full_name }}</td>
+                    <td>{{ u.email or '-' }}</td>
+                    <td><span class="badge bg-primary">{{ u.role|capitalize }}</span></td>
+                    <td><span class="badge {% if u.is_active %}bg-success{% else %}bg-danger{% endif %}">{{ 'Aktif' if u.is_active else 'Nonaktif' }}</span></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

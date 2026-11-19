@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Laporan Harian{% endblock %}
+
+{% block content %}
+<div class="page-header d-flex justify-content-between align-items-center">
+    <h2><i class="fas fa-calendar-day"></i> Laporan Harian - {{ date_filter }}</h2>
+    <div>
+        <a href="{{ url_for('reports.export_excel', from=date_filter, to=date_filter) }}" class="btn btn-success">
+            <i class="fas fa-file-excel"></i> Excel
+        </a>
+        <a href="{{ url_for('reports.export_pdf', from=date_filter, to=date_filter) }}" class="btn btn-danger">
+            <i class="fas fa-file-pdf"></i> PDF
+        </a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <table class="table">
+            <thead><tr><th>Nama</th><th>Kelas</th><th>Sesi</th><th>Status</th><th>Waktu</th></tr></thead>
+            <tbody>
+                {% for a in attendances %}
+                <tr>
+                    <td>{{ a.student.full_name }}</td>
+                    <td>{{ a.student.classroom.full_name if a.student.classroom else '-' }}</td>
+                    <td>{{ a.session.name }}</td>
+                    <td><span class="badge badge-{{ a.status }}">{{ a.status|capitalize }}</span></td>
+                    <td>{{ a.check_in_time.strftime('%H:%M') if a.check_in_time else '-' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

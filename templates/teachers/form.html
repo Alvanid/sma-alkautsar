@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit' if teacher else 'Tambah' }} Guru{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2><i class="fas fa-user-plus"></i> {{ 'Edit' if teacher else 'Tambah' }} Guru</h2>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">NIP</label>
+                    <input type="text" name="nip" class="form-control" value="{{ teacher.nip if teacher else '' }}">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Nama Lengkap *</label>
+                    <input type="text" name="full_name" class="form-control" value="{{ teacher.full_name if teacher else '' }}" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Jenis Kelamin *</label>
+                    <select name="gender" class="form-select" required>
+                        <option value="L" {% if teacher and teacher.gender == 'L' %}selected{% endif %}>Laki-laki</option>
+                        <option value="P" {% if teacher and teacher.gender == 'P' %}selected{% endif %}>Perempuan</option>
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Mata Pelajaran</label>
+                    <input type="text" name="subject" class="form-control" value="{{ teacher.subject if teacher else '' }}">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">No. Telepon</label>
+                    <input type="text" name="phone" class="form-control" value="{{ teacher.phone if teacher else '' }}">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control" value="{{ teacher.email if teacher else '' }}">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Simpan</button>
+            <a href="{{ url_for('admin.teachers') }}" class="btn btn-secondary">Batal</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Dashboard Kepala Sekolah{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2><i class="fas fa-user-tie"></i> Dashboard Kepala Sekolah</h2>
+    <p class="text-muted">Pantauan Eksekutif - {{ today.strftime('%d %B %Y') }}</p>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card bg-gradient-primary">
+        <i class="fas fa-users"></i>
+        <div><h3>{{ total_students }}</h3><p>Total Siswa Aktif</p></div>
+    </div>
+    <div class="stat-card bg-success" style="color:white;">
+        <i class="fas fa-check-circle"></i>
+        <div><h3>{{ hadir }}</h3><p>Hadir Hari Ini</p></div>
+    </div>
+    <div class="stat-card bg-warning" style="color:white;">
+        <i class="fas fa-clock"></i>
+        <div><h3>{{ terlambat }}</h3><p>Terlambat</p></div>
+    </div>
+    <div class="stat-card bg-danger" style="color:white;">
+        <i class="fas fa-times-circle"></i>
+        <div><h3>{{ alfa }}</h3><p>Tanpa Keterangan</p></div>
+    </div>
+</div>
+
+<div class="card mt-4">
+    <div class="card-header"><h5>Rekapitulasi Kehadiran Per Kelas Hari Ini</h5></div>
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead>
+                <tr><th>Kelas</th><th>Total Siswa</th><th>Hadir</th><th>Persentase</th></tr>
+            </thead>
+            <tbody>
+                {% for stat in class_stats %}
+                <tr>
+                    <td><strong>{{ stat.name }}</strong></td>
+                    <td>{{ stat.total }}</td>
+                    <td>{{ stat.present }}</td>
+                    <td>
+                        {% set pct = (stat.present / stat.total * 100) if stat.total > 0 else 0 %}
+                        <div class="progress" style="height: 20px;">
+                            <div class="progress-bar bg-success" style="width: {{ pct }}%">{{ pct|round(1) }}%</div>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

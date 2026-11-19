@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Riwayat Kehadiran{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2><i class="fas fa-history"></i> Riwayat Kehadiran</h2>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <table class="table">
+            <thead><tr><th>Tanggal</th><th>Sesi</th><th>Status</th><th>Waktu</th></tr></thead>
+            <tbody>
+                {% for a in attendances %}
+                <tr>
+                    <td>{{ a.date.strftime('%d/%m/%Y') }}</td>
+                    <td>{{ a.session.name }}</td>
+                    <td><span class="badge badge-{{ a.status }}">{{ a.status|capitalize }}</span></td>
+                    <td>{{ a.check_in_time.strftime('%H:%M') if a.check_in_time else '-' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

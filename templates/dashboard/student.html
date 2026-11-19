@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Dashboard Siswa{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2><i class="fas fa-user-graduate"></i> Dashboard Siswa</h2>
+    <p class="text-muted">Selamat datang, {{ student.full_name }}</p>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card bg-gradient-primary">
+        <i class="fas fa-percentage"></i>
+        <div>
+            <h3>{{ percentage }}%</h3>
+            <p>Kehadiran</p>
+        </div>
+    </div>
+    <div class="stat-card {% if today_attendance and today_attendance.status == 'hadir' %}bg-success{% else %}bg-secondary{% endif %}" style="color: white;">
+        <i class="fas fa-calendar-check"></i>
+        <div>
+            <h3>{{ today_attendance.status|capitalize if today_attendance else 'Belum' }}</h3>
+            <p>Status Hari Ini</p>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header"><h5>QR Code Saya</h5></div>
+            <div class="card-body text-center">
+                {% if qr_image %}
+                <img src="{{ qr_image }}" alt="QR" class="img-fluid" style="max-width: 250px;">
+                {% else %}
+                <p class="text-muted">QR Code belum tersedia</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header"><h5>Riwayat Kehadiran</h5></div>
+            <div class="card-body">
+                <table class="table table-sm">
+                    <thead><tr><th>Tanggal</th><th>Status</th></tr></thead>
+                    <tbody>
+                        {% for a in recent %}
+                        <tr>
+                            <td>{{ a.date.strftime('%d/%m/%Y') }}</td>
+                            <td><span class="badge badge-{{ a.status }}">{{ a.status|capitalize }}</span></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

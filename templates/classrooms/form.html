@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Tambah Kelas{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2><i class="fas fa-plus"></i> Tambah Kelas</h2>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Tingkat *</label>
+                    <select name="grade" class="form-select" required>
+                        <option value="X">X</option>
+                        <option value="XI">XI</option>
+                        <option value="XII">XII</option>
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Nama/Rombel *</label>
+                    <input type="text" name="name" class="form-control" placeholder="1, 2, 3..." required>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <label class="form-label">Wali Kelas</label>
+                    <select name="homeroom_teacher_id" class="form-select">
+                        <option value="">-- Pilih Wali Kelas --</option>
+                        {% for t in teachers %}
+                        <option value="{{ t.id }}">{{ t.full_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Simpan</button>
+            <a href="{{ url_for('admin.classrooms') }}" class="btn btn-secondary">Batal</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

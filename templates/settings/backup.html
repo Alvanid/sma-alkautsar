@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Backup Database{% endblock %}
+
+{% block content %}
+<div class="page-header d-flex justify-content-between align-items-center">
+    <h2><i class="fas fa-database"></i> Backup Database</h2>
+    <form method="POST" action="{{ url_for('settings.create_backup_route') }}" style="display:inline;">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button class="btn btn-primary"><i class="fas fa-plus"></i> Backup Sekarang</button>
+    </form>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <tr><th>Filename</th><th>Ukuran</th><th>Tanggal</th><th>Aksi</th></tr>
+            </thead>
+            <tbody>
+                {% for b in backups %}
+                <tr>
+                    <td>{{ b.filename }}</td>
+                    <td>{{ (b.size / 1024)|round(1) }} KB</td>
+                    <td>{{ b.created_at.strftime('%d/%m/%Y %H:%M') }}</td>
+                    <td>
+                        <a href="{{ url_for('settings.download_backup', id=b.id) }}" class="btn btn-sm btn-success">
+                            <i class="fas fa-download"></i>
+                        </a>
+                        <form method="POST" action="{{ url_for('settings.restore_backup_route', id=b.id) }}" style="display:inline;">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button class="btn btn-sm btn-warning" onclick="return confirm('Yakin restore?')"><i class="fas fa-undo"></i></button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

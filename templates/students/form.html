@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if not classes %}
+<div class="alert alert-warning d-flex justify-content-between align-items-center">
+    <span><i class="fas fa-exclamation-triangle"></i> Belum ada kelas. Buat kelas terlebih dahulu agar siswa bisa ditempatkan.</span>
+    <a href="{{ url_for('admin.add_classroom') }}" class="btn btn-sm btn-warning">
+        <i class="fas fa-plus"></i> Tambah Kelas
+    </a>
+</div>
+{% endif %}
+
+<div class="page-header">
+    <h2><i class="fas fa-user-plus"></i> {{ 'Edit' if student else 'Tambah' }} Siswa</h2>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">NIS *</label>
+                    <input type="text" name="nis" class="form-control" value="{{ student.nis if student else '' }}" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">NISN</label>
+                    <input type="text" name="nisn" class="form-control" value="{{ student.nisn if student else '' }}">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Nama Lengkap *</label>
+                    <input type="text" name="full_name" class="form-control" value="{{ student.full_name if student else '' }}" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Jenis Kelamin *</label>
+                    <select name="gender" class="form-select" required>
+                        <option value="L" {% if student and student.gender == 'L' %}selected{% endif %}>Laki-laki</option>
+                        <option value="P" {% if student and student.gender == 'P' %}selected{% endif %}>Perempuan</option>
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Tempat Lahir</label>
+                    <input type="text" name="birth_place" class="form-control" value="{{ student.birth_place if student else '' }}">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Tanggal Lahir</label>
+                    <input type="date" name="birth_date" class="form-control" value="{{ student.birth_date.strftime('%Y-%m-%d') if student and student.birth_date else '' }}">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Kelas</label>
+                    <select name="class_id" class="form-select">
+                        <option value="">-- Pilih Kelas --</option>
+                        {% for c in classes %}
+                        <option value="{{ c.id }}" {% if student and student.class_id == c.id %}selected{% endif %}>{{ c.full_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Tahun Masuk</label>
+                    <input type="number" name="year_entry" class="form-control" value="{{ student.year_entry if student else '' }}">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">No. Telepon</label>
+                    <input type="text" name="phone" class="form-control" value="{{ student.phone if student else '' }}">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control" value="{{ student.email if student else '' }}">
+                </div>
+                <div class="col-12 mb-3">
+                    <label class="form-label">Alamat</label>
+                    <textarea name="address" class="form-control" rows="2">{{ student.address if student else '' }}</textarea>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Nama Orang Tua</label>
+                    <input type="text" name="parent_name" class="form-control" value="{{ student.parent_name if student else '' }}">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">No. WA Orang Tua</label>
+                    <input type="text" name="parent_phone" class="form-control" value="{{ student.parent_phone if student else '' }}">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Simpan</button>
+            <a href="{{ url_for('admin.students') }}" class="btn btn-secondary">Batal</a>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
